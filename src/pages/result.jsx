@@ -7,6 +7,12 @@ export const Result = () => {
     const { id } = useParams()
     const [data, setData] = React.useState({})
 
+    const token = localStorage.getItem('jwt');
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const userId = user.id;
+    const showId = data.id;
+
     React.useEffect(() => {
         fetch(`https://api.tvmaze.com/shows/${id}?embed=cast`)
             .then(res => res.json())
@@ -14,8 +20,24 @@ export const Result = () => {
             .catch(e => console.log(e))
     }, [])
 
+    const handleAdd = (e) => {
+        e.preventDefault()
+        fetch(`http://localhost:3000/favorite`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json', 'x-auth-token' : token},
+            body: JSON.stringify({showId, userId}),
+        })
+        .then(res => res.json())
+        try {
+            alert(`${data.name} a été rajouté à vos favoris !`)
+        } catch(err) {
+            alert(err.message)
+        }
+    }
+
     return (
         <>
+            <button onClick={handleAdd}>Ajouter aux favoris</button>
             <img src={data.image?.medium || NotFound} />
             <p>{data.summary}</p>
             <br />
