@@ -47,7 +47,7 @@ export const Nav = ({name}) => {
             :
             <div>
                 <button><a href="/signup">Inscription</a></button>
-                <button onClick={handleButton}><a href="/signin">Connection</a></button>
+                <button onClick={handleButton}><a href="/signin">Connexion</a></button>
             </div>
         }
         {
